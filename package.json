@@ -10,8 +10,11 @@
     "test": "jest"
   },
   "dependencies": {
+    "@instructure/ui-alerts": "^7.20.0",
+    "@instructure/ui-select": "^7.20.0",
     "@instructure/ui-tooltip": "^7",
     "@instructure/ui-view": "^7",
+    "@testing-library/react": "^12.1.5",
     "react": "^16",
     "react-dom": "^16"
   },

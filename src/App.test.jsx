@@ -1,25 +1,35 @@
 import React from 'react'
-import Enzyme, {mount } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16';
+import { render, act, fireEvent} from '@testing-library/react'
+import { AsyncExample} from './SelectExample'
 
-Enzyme.configure({adapter: new Adapter()});
-
-import { App } from './App'
+// suppress instui warnings
+// global.console = {error: jest.fn(), warn: jest.fn(), log: jest.fn()}
 
 describe("testing with jest", () => {
-    beforeAll(() => {
-        jest.setTimeout(15000)
-      })
+     beforeEach(() => {
+        jest.useFakeTimers()
+     })
 
-      afterAll(() => {
-        jest.setTimeout(5000)
-      })
+    it("should render Select", () => {
+        const { getByLabelText, getByText } = render(
+            <AsyncExample options={[
+                { id: 'opt0', label: 'Aaron Aaronson' },
+                { id: 'opt1', label: 'Amber Murphy' },
+                { id: 'opt2', label: 'Andrew Miller' },
+            ]}
+            />)
 
-    it('should render', () => {
-        expect(() => {
-            const container = mount(<App show={false}/>);
-            container.setProps({show: true })
-        }).not.toThrow()
-    });
+        const selectInput = getByLabelText(/Async Select/i)
 
+        fireEvent.click(selectInput)
+        fireEvent.change(selectInput, {target: {value: 'Aa'}})
+
+        act(() => jest.runAllTimers())
+
+        const result = getByText("Aaron Aaronson")
+
+        console.log(result)
+
+        expect(result).not.toBe(null)
+    })
 })
